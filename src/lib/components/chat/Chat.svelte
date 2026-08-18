@@ -3956,6 +3956,7 @@
 										{taskIds}
 										bind:selectedModels
 										bind:files
+											bind:systemPrompt={params.system}
 										bind:prompt
 										bind:autoScroll
 										bind:selectedToolIds
@@ -4076,6 +4077,7 @@
 										bind:selectedModels
 										bind:files
 										bind:prompt
+										bind:systemPrompt={params.system}
 										bind:autoScroll
 										bind:selectedToolIds
 										bind:selectedSkillIds
