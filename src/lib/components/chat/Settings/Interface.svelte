@@ -20,6 +20,7 @@
 	export let persistSettings: Function;
 
 	let draftSettings = {};
+	let pendingLocation = null;
 
 	const saveSettings = (updated: Record<string, any>) => {
 		const nextDraft = { ...draftSettings, ...updated };
@@ -143,11 +144,13 @@
 			});
 
 			if (position) {
-				await updateUserInfo(localStorage.token, { location: position });
+				pendingLocation = position;
 				toast.success($i18n.t('User location successfully retrieved.'));
 			} else {
 				userLocation = false;
 			}
+		} else {
+			pendingLocation = null;
 		}
 
 		saveSettings({ userLocation });
@@ -209,6 +212,11 @@
 		if (Object.keys(draftSettings).length > 0) {
 			await persistSettings(draftSettings);
 			draftSettings = {};
+		}
+
+		if (pendingLocation) {
+			await updateUserInfo(localStorage.token, { location: pendingLocation });
+			pendingLocation = null;
 		}
 	};
 
