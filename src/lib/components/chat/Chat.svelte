@@ -3956,7 +3956,7 @@
 										{taskIds}
 										bind:selectedModels
 										bind:files
-											bind:systemPrompt={params.system}
+										systemPrompt={params.system ?? ''}
 										bind:prompt
 										bind:autoScroll
 										bind:selectedToolIds
@@ -4024,6 +4024,9 @@
 											}
 										}}
 										onWebSearchToggle={handleWebSearchToggle}
+										on:systemPromptChange={(event) => {
+											params = { ...params, system: event.detail };
+										}}
 										on:chatVariables={() => {
 											showChatVariablesModal = true;
 										}}
@@ -4077,7 +4080,7 @@
 										bind:selectedModels
 										bind:files
 										bind:prompt
-										bind:systemPrompt={params.system}
+										systemPrompt={params.system ?? ''}
 										bind:autoScroll
 										bind:selectedToolIds
 										bind:selectedSkillIds
@@ -4104,6 +4107,9 @@
 										messageQueue={$chatRequestQueues[$chatId] ?? []}
 										{chatTasks}
 										onWebSearchToggle={handleWebSearchToggle}
+										on:systemPromptChange={(event) => {
+											params = { ...params, system: event.detail };
+										}}
 										on:chatVariables={() => {
 											showChatVariablesModal = true;
 										}}

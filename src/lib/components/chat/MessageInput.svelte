@@ -1711,7 +1711,9 @@
 									{/each}
 								</div>
 
-								<details class="mx-2 mb-1 rounded-xl border border-gray-100/50 dark:border-gray-800/50">
+								<details
+									class="mx-2 mb-1 rounded-xl border border-gray-100/50 dark:border-gray-800/50"
+								>
 									<summary
 										class="cursor-pointer select-none px-2.5 py-1.5 text-xs text-gray-500 dark:text-gray-400"
 									>
@@ -1727,9 +1729,12 @@
 										<textarea
 											id="file-system-prompt"
 											bind:value={systemPrompt}
+												on:input={() => dispatch('systemPromptChange', systemPrompt)}
 											rows="3"
 											class="w-full resize-y rounded-lg border-0 bg-transparent px-2 py-1.5 text-sm outline-hidden ring-1 ring-gray-200/70 placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 dark:ring-gray-700/70 dark:placeholder:text-gray-600 dark:focus:ring-gray-600"
-											placeholder={$i18n.t('For example: summarize key obligations and mention missing information')}
+											placeholder={$i18n.t(
+												'For example: summarize key obligations and mention missing information'
+											)}
 										/>
 									</div>
 								</details>
