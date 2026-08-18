@@ -195,7 +195,9 @@ export const getChatList = async (
 	token: string = '',
 	page: number | null = null,
 	include_pinned: boolean = false,
-	include_folders: boolean = false
+	include_folders: boolean = false,
+	sort_by: string = 'updated_at',
+	sort_dir: string = 'desc'
 ) => {
 	let error = null;
 	const searchParams = new URLSearchParams();
@@ -211,6 +213,9 @@ export const getChatList = async (
 	if (include_pinned) {
 		searchParams.append('include_pinned', 'true');
 	}
+
+	searchParams.append('sort_by', sort_by);
+	searchParams.append('sort_dir', sort_dir);
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/chats/?${searchParams.toString()}`, {
 		method: 'GET',
