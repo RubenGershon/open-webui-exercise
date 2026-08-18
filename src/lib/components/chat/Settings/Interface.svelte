@@ -17,7 +17,21 @@
 
 	const i18n = getContext('i18n');
 
-	export let saveSettings: Function;
+	export let persistSettings: Function;
+
+	let draftSettings = {};
+
+	const saveSettings = (updated: Record<string, any>) => {
+		const nextDraft = { ...draftSettings, ...updated };
+
+		for (const [key, value] of Object.entries(nextDraft)) {
+			if (JSON.stringify(value) === JSON.stringify($settings?.[key])) {
+				delete nextDraft[key];
+			}
+		}
+
+		draftSettings = nextDraft;
+	};
 
 	let backgroundImageUrl = null;
 	let inputFiles = null;
@@ -191,6 +205,11 @@
 			models: [defaultModelId],
 			imageCompressionSize: imageCompressionSize
 		});
+
+		if (Object.keys(draftSettings).length > 0) {
+			await persistSettings(draftSettings);
+			draftSettings = {};
+		}
 	};
 
 	const toggleWebSearch = async () => {
@@ -311,8 +330,8 @@
 <form
 	id="tab-interface"
 	class="flex flex-col h-full justify-between text-sm"
-	on:submit|preventDefault={() => {
-		updateInterfaceHandler();
+	on:submit|preventDefault={async () => {
+		await updateInterfaceHandler();
 		dispatch('save');
 	}}
 >

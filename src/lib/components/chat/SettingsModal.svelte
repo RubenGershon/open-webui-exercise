@@ -1168,7 +1168,7 @@
 				/>
 			{:else if selectedTab === 'interface'}
 				<Interface
-					{saveSettings}
+					persistSettings={saveSettings}
 					on:save={() => {
 						toast.success($i18n.t('Settings saved successfully!'));
 					}}
