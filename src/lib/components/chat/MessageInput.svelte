@@ -150,7 +150,6 @@
 	export let prompt = '';
 	export let files = [];
 	export let systemPrompt = '';
-	export let onSystemPromptChange = (_value: string) => {};
 
 	export let selectedToolIds = [];
 	export let selectedSkillIds = [];
@@ -1730,7 +1729,6 @@
 										<textarea
 											id="file-system-prompt"
 											bind:value={systemPrompt}
-											on:input={(event) => onSystemPromptChange(event.currentTarget.value)}
 											rows="3"
 											class="w-full resize-y rounded-lg border-0 bg-transparent px-2 py-1.5 text-sm outline-hidden ring-1 ring-gray-200/70 placeholder:text-gray-400 focus:ring-2 focus:ring-gray-300 dark:ring-gray-700/70 dark:placeholder:text-gray-600 dark:focus:ring-gray-600"
 											placeholder={$i18n.t(

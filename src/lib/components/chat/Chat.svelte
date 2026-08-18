@@ -387,6 +387,7 @@
 	let chatFiles = [];
 	let files = [];
 	let params = {};
+	let fileSystemPrompt = '';
 	let chatVariables = {};
 	let showChatVariablesModal = false;
 	let loadedChatIdProp = '';
@@ -635,6 +636,7 @@
 			currentId: null
 		};
 		params = {};
+		fileSystemPrompt = '';
 		chatVariables = {};
 		chatFiles = [];
 		files = [];
@@ -1828,6 +1830,7 @@
 
 		chatFiles = [];
 		params = {};
+		fileSystemPrompt = '';
 		chatVariables = {};
 		taskIds = null;
 		chatTasks = [];
@@ -2022,6 +2025,7 @@
 				chatTitle.set(chatContent.title);
 
 				params = structuredClone(chatContent?.params ?? {});
+				fileSystemPrompt = params.system ?? '';
 				delete params.note_id;
 				chatFiles = structuredClone(chatContent?.files ?? []);
 
@@ -2648,6 +2652,14 @@
 
 	const submitHandler = async (userPrompt, { _raw = false } = {}) => {
 		console.log('submitHandler', userPrompt, $chatId);
+		const systemPromptInput = document.getElementById('file-system-prompt');
+		if (systemPromptInput instanceof HTMLTextAreaElement) {
+			fileSystemPrompt = systemPromptInput.value;
+		}
+		params = {
+			...params,
+			...(fileSystemPrompt.trim() ? { system: fileSystemPrompt } : {})
+		};
 
 		const _selectedModels = selectedModels.map((modelId) =>
 			$models.map((m) => m.id).includes(modelId) ? modelId : ''
@@ -2862,6 +2874,7 @@
 				await chatTitle.set(createdChat?.chat?.title ?? createdChat?.title ?? $i18n.t('Chat'));
 
 				params = structuredClone(createdChat?.chat?.params ?? {});
+				fileSystemPrompt = params.system ?? '';
 				delete params.note_id;
 				chatFiles = mergeFiles(chatFiles, createdChat?.chat?.files ?? []);
 				await onSelectEmbeddedChat?.(_chatId);
@@ -3956,10 +3969,7 @@
 										{taskIds}
 										bind:selectedModels
 										bind:files
-										systemPrompt={params.system ?? ''}
-										onSystemPromptChange={(value) => {
-											params = { ...params, system: value };
-										}}
+										bind:systemPrompt={fileSystemPrompt}
 										bind:prompt
 										bind:autoScroll
 										bind:selectedToolIds
@@ -4080,10 +4090,7 @@
 										bind:selectedModels
 										bind:files
 										bind:prompt
-										systemPrompt={params.system ?? ''}
-										onSystemPromptChange={(value) => {
-											params = { ...params, system: value };
-										}}
+										bind:systemPrompt={fileSystemPrompt}
 										bind:autoScroll
 										bind:selectedToolIds
 										bind:selectedSkillIds
